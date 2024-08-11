@@ -14,4 +14,9 @@ classifiers = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/bradleydonmorris/CCSVGit"
+Homepage = "https://github.com/bradleydonmorris/FancyBoxes"
+Issues = "https://github.com/bradleydonmorris/FancyBoxes/issues"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

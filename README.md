@@ -1,2 +1,2 @@
-# CCSVGit
-Utility library for using conventional commits and semantic versioning with a Git repo
+# FancyBoxes
+Utility library for outputing fancey boxes to the console.
