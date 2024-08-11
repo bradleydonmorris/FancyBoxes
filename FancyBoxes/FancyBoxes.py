@@ -88,7 +88,7 @@ def BuildTable(
 	dataRows:list[list[str]]|None = None,
 	footerRows:list[list[str]]|None = None,
 	minimumCellWidths:list[int]|None = None,
-	borderColor:str = "white"
+	borderColor:str|None = None
 ) -> str:
 	returnValue:str = ""
 	lines:list[str] = list[str]()
@@ -139,74 +139,146 @@ def BuildTable(
 					minimumCellWidths[cellIndex] = maximumLineLength
 
 	lastCellIndex:int = len(minimumCellWidths) - 1
-	line:str = colored("\u2554", color=borderColor)
-	for cellIndex, cellWidth in enumerate(minimumCellWidths):
-		line += colored("\u2550"*cellWidth, color=borderColor)
-		if (cellIndex < lastCellIndex):
-			line += colored("\u2564", color=borderColor)
-	line += colored("\u2557", color=borderColor)
-	lines.append(line)
-
-	if (headerRows is not None):
-		for rowIndex, row in enumerate(headerRows):
-			line = colored("\u2551", color=borderColor)
-			for cellIndex, cellWidth in enumerate(minimumCellWidths):
-				line += row[cellIndex]
-				if (cellIndex < lastCellIndex):
-					line += colored("\u2502", color=borderColor)
-			line += colored("\u2551", color=borderColor)
-			lines.append(line)
-		line = colored("\u2560", color=borderColor)
+	if (borderColor is not None):
+		line:str = colored("\u2554", color=borderColor)
 		for cellIndex, cellWidth in enumerate(minimumCellWidths):
 			line += colored("\u2550"*cellWidth, color=borderColor)
 			if (cellIndex < lastCellIndex):
-				line += colored("\u256A", color=borderColor)
-		line += colored("\u2562", color=borderColor)
+				line += colored("\u2564", color=borderColor)
+		line += colored("\u2557", color=borderColor)
 		lines.append(line)
-	if (dataRows is not None):
-		lastDataRowIndex:int = len(dataRows) - 1
-		for rowIndex, row in enumerate(dataRows):
-			line = colored("\u2551", color=borderColor)
-			for cellIndex, cellWidth in enumerate(minimumCellWidths):
-				line += row[cellIndex]
-				if (cellIndex < lastCellIndex):
-					line += colored("\u2502", color=borderColor)
-			line += colored("\u2551", color=borderColor)
-			lines.append(line)
-			if (rowIndex < lastDataRowIndex):
-				line = colored("\u255F", color=borderColor)
+
+		if (headerRows is not None):
+			for rowIndex, row in enumerate(headerRows):
+				line = colored("\u2551", color=borderColor)
 				for cellIndex, cellWidth in enumerate(minimumCellWidths):
-					line += colored("\u2500"*cellWidth, color=borderColor)
+					line += row[cellIndex]
 					if (cellIndex < lastCellIndex):
-						line += colored("\u253C", color=borderColor)
-				line += colored("\u2562", color=borderColor)
+						line += colored("\u2502", color=borderColor)
+				line += colored("\u2551", color=borderColor)
 				lines.append(line)
-	if (footerRows is not None):
-		line = colored("\u2560", color=borderColor)
-		for cellIndex, cellWidth in enumerate(minimumCellWidths):
-			line += colored("\u2550"*cellWidth, color=borderColor)
-			if (cellIndex < lastCellIndex):
-				line += colored("\u256A", color=borderColor)
-		line += colored("\u2562", color=borderColor)
-		lines.append(line)
-
-		for rowIndex, row in enumerate(footerRows):
-			line = colored("\u2551", color=borderColor)
+			line = colored("\u2560", color=borderColor)
 			for cellIndex, cellWidth in enumerate(minimumCellWidths):
-				line += row[cellIndex]
+				line += colored("\u2550"*cellWidth, color=borderColor)
 				if (cellIndex < lastCellIndex):
-					line += colored("\u2502", color=borderColor)
-			line += colored("\u2551", color=borderColor)
+					line += colored("\u256A", color=borderColor)
+			line += colored("\u2562", color=borderColor)
+			lines.append(line)
+		if (dataRows is not None):
+			lastDataRowIndex:int = len(dataRows) - 1
+			for rowIndex, row in enumerate(dataRows):
+				line = colored("\u2551", color=borderColor)
+				for cellIndex, cellWidth in enumerate(minimumCellWidths):
+					line += row[cellIndex]
+					if (cellIndex < lastCellIndex):
+						line += colored("\u2502", color=borderColor)
+				line += colored("\u2551", color=borderColor)
+				lines.append(line)
+				if (rowIndex < lastDataRowIndex):
+					line = colored("\u255F", color=borderColor)
+					for cellIndex, cellWidth in enumerate(minimumCellWidths):
+						line += colored("\u2500"*cellWidth, color=borderColor)
+						if (cellIndex < lastCellIndex):
+							line += colored("\u253C", color=borderColor)
+					line += colored("\u2562", color=borderColor)
+					lines.append(line)
+		if (footerRows is not None):
+			line = colored("\u2560", color=borderColor)
+			for cellIndex, cellWidth in enumerate(minimumCellWidths):
+				line += colored("\u2550"*cellWidth, color=borderColor)
+				if (cellIndex < lastCellIndex):
+					line += colored("\u256A", color=borderColor)
+			line += colored("\u2562", color=borderColor)
 			lines.append(line)
 
-	#Bottom Line
-	line = colored("\u255A", color=borderColor)
-	for cellIndex, cellWidth in enumerate(minimumCellWidths):
-		line += colored("\u2550"*minimumCellWidths[cellIndex], color=borderColor)
-		if (cellIndex < lastCellIndex):
-			line += colored("\u2567", color=borderColor)
-	line += colored("\u255D", color=borderColor)
-	lines.append(line)
+			for rowIndex, row in enumerate(footerRows):
+				line = colored("\u2551", color=borderColor)
+				for cellIndex, cellWidth in enumerate(minimumCellWidths):
+					line += row[cellIndex]
+					if (cellIndex < lastCellIndex):
+						line += colored("\u2502", color=borderColor)
+				line += colored("\u2551", color=borderColor)
+				lines.append(line)
+
+		#Bottom Line
+		line = colored("\u255A", color=borderColor)
+		for cellIndex, cellWidth in enumerate(minimumCellWidths):
+			line += colored("\u2550"*minimumCellWidths[cellIndex], color=borderColor)
+			if (cellIndex < lastCellIndex):
+				line += colored("\u2567", color=borderColor)
+		line += colored("\u255D", color=borderColor)
+		lines.append(line)
+
+
+	if (borderColor is None):
+		line:str = "\u2554"
+		for cellIndex, cellWidth in enumerate(minimumCellWidths):
+			line += "\u2550"*cellWidth
+			if (cellIndex < lastCellIndex):
+				line += "\u2564"
+		line += "\u2557"
+		lines.append(line)
+
+		if (headerRows is not None):
+			for rowIndex, row in enumerate(headerRows):
+				line = "\u2551"
+				for cellIndex, cellWidth in enumerate(minimumCellWidths):
+					line += row[cellIndex]
+					if (cellIndex < lastCellIndex):
+						line += "\u2502"
+				line += "\u2551"
+				lines.append(line)
+			line = "\u2560"
+			for cellIndex, cellWidth in enumerate(minimumCellWidths):
+				line += "\u2550"*cellWidth
+				if (cellIndex < lastCellIndex):
+					line += "\u256A"
+			line += "\u2562"
+			lines.append(line)
+		if (dataRows is not None):
+			lastDataRowIndex:int = len(dataRows) - 1
+			for rowIndex, row in enumerate(dataRows):
+				line = "\u2551"
+				for cellIndex, cellWidth in enumerate(minimumCellWidths):
+					line += row[cellIndex]
+					if (cellIndex < lastCellIndex):
+						line += "\u2502"
+				line += "\u2551"
+				lines.append(line)
+				if (rowIndex < lastDataRowIndex):
+					line = "\u255F"
+					for cellIndex, cellWidth in enumerate(minimumCellWidths):
+						line += "\u2500"*cellWidth
+						if (cellIndex < lastCellIndex):
+							line += "\u253C"
+					line += "\u2562"
+					lines.append(line)
+		if (footerRows is not None):
+			line = "\u2560"
+			for cellIndex, cellWidth in enumerate(minimumCellWidths):
+				line += "\u2550"*cellWidth
+				if (cellIndex < lastCellIndex):
+					line += "\u256A"
+			line += "\u2562"
+			lines.append(line)
+
+			for rowIndex, row in enumerate(footerRows):
+				line = "\u2551"
+				for cellIndex, cellWidth in enumerate(minimumCellWidths):
+					line += row[cellIndex]
+					if (cellIndex < lastCellIndex):
+						line += "\u2502"
+				line += "\u2551"
+				lines.append(line)
+
+		#Bottom Line
+		line = "\u255A"
+		for cellIndex, cellWidth in enumerate(minimumCellWidths):
+			line += "\u2550"*minimumCellWidths[cellIndex]
+			if (cellIndex < lastCellIndex):
+				line += "\u2567"
+		line += "\u255D"
+		lines.append(line)
 
 	returnValue = "\n".join(lines)
 	return returnValue
